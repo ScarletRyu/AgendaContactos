@@ -1,29 +1,26 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class LlamadaContactos {
 	//Scanner
 	static Scanner scan = new Scanner(System.in);
-	
-	// Contador de objetos creados.		
-	static Contacto[] lista_contactos = new Contacto[99];
-    private static int contador_contactos = 0; 
-    
+	//Crear el ArrayList (fuera del static void main para que lo reconozcan todas las instancias de la clase
+	static ArrayList<Contacto> contactos = new ArrayList<Contacto>();
 	public static void main(String[] args) {
 		int opcion;
 		
-		//Crear el ArrayList 
-		ArrayList<Contacto> contactos = new ArrayList<Contacto>();
+		
 		
 		//Crear do while para menu con opciones 
 		do {
 			System.out.println("Menu De Agenda");
 			System.out.println("1. Añadir un nuevo contacto");
-			System.out.println("2. Comprobar existencia contacto");
-			System.out.println("3. Listar contactos");
-			System.out.println("4. Buscar un contacto");
-			System.out.println("5. Eliminar un contacto");
-			System.out.println("6. Salir");
+			System.out.println("2. Listar contactos");
+			System.out.println("3. Buscar un contacto");
+			System.out.println("4. Eliminar un contacto");
+			System.out.println("5. Salir");
+			
 			
 			opcion = scan.nextInt();
 			scan.nextLine();
@@ -33,18 +30,20 @@ public class LlamadaContactos {
 				nuevoContacto(contactos);
 				break;
 			case 2:
-				existeContacto(contactos);
+				listarContacto();
 				break;
 			case 3:
-				listarContacto(contactos);
+				System.out.println("Introduce nombre a buscar: ");
+				String nombreBuscar = scan.nextLine();
+				buscarContacto(nombreBuscar);
 				break;
 			case 4:
-				buscarContacto(contactos);
+				System.out.println("Introduce nombre a borrar: ");
+				String nombreEliminar = scan.nextLine();
+				eliminarContacto(nombreEliminar);
 				break;
 			case 5:
-				eliminarContacto(contactos);
-				break;
-			case 6: //Evitar que entre en default
+				//Evitar que entre en default
 				break;
 			}
 		}while(opcion != 6);
@@ -60,61 +59,75 @@ public static void nuevoContacto(ArrayList<Contacto> contactos) {
 	System.out.println("Introduce un telefono: ");
 	int telefono = scan.nextInt();
 	scan.nextLine(); //Para leer salto de linea
+	
+	//Controlar si existe 
+	if(contactoExiste(nombre) == false) {
 	Contacto c = new Contacto(nombre, telefono);
 	//Añadir el contacto a la lista
 	contactos.add(c);
 	
-}
+	//Si no lo hace
 
-
-
-/*Metodo para comprobar si un contacto existe*/
-private static void existeContacto(ArrayList<Contacto> contactos) {
-		System.out.println("Introduce un nombre a buscar: ");
-		String nombre = scan.nextLine();
-	for (int i=0; i< contador_contactos; i++) {
-			if (nombre.equals(lista_contactos[i].getNombre())) {
-				System.out.println("Ya existe un contacto con ese nombre");
-				
-			}
-		}
-		
+	}else {
+		System.out.println("Contacto Duplicado");
 	}
+	}
+
+
+
+//Continuacion del metodo para crear contactos, no podemos duplicar nombres, aunque tengan distinto teléfono
+public static  boolean contactoExiste (String nombre) {
+	boolean comprobarExistencia = false;
+	for (int i = 0; i< contactos.size(); i++) {
+		if (contactos.get(i).getNombre().equalsIgnoreCase(nombre)) {
+			
+			comprobarExistencia = true;
+		}
+	
+		else {
+			comprobarExistencia = false;
+		}
+	}return comprobarExistencia;
+	
+}
 	
 
 /*Metodo para listar los contactos existentes*/
-private static void listarContacto(ArrayList<Contacto> contactos) {
-	System.out.println("Introduce nombre de contacto: ");
-	String nombre = scan.nextLine();
-	scan.nextLine();
+public static void listarContacto() {
+	Iterator listIt = contactos.iterator();
+	while(listIt.hasNext()) {
+		Contacto contObj1  = (Contacto) listIt.next();
+		System.out.println(contObj1);
+	}
 	
 	
 }
 	
 	
 /*Metodo para buscar contactos*/
-private static void buscarContacto(ArrayList<Contacto> contactos) {
-		boolean encontrado = false;
-		
-		for (int i=0; i< contador_contactos; i++) {
-			if(contactos.equals(lista_contactos[i].getNombre())) {
-				System.out.println(lista_contactos[i].getNombre() + "-"  + "Tf:" + lista_contactos[i].getTelefono());
-                encontrado = true;
+public static void buscarContacto(String nombre) {
+		//Creamos la variable busquedaContacto e introducimos los parametro dentro de contactos en ella
+		for(Contacto busquedaContacto: contactos) {
+			if (busquedaContacto.getNombre().equalsIgnoreCase(nombre)) {
+				System.out.println(busquedaContacto.toStringTelefono());
 			}
 		}
-		if (!encontrado) {
-			System.out.println("Contacto inexistente");
-		}
+		
+		
 	}
 
 /*Metodo para eliminar contactos*/
-private static void eliminarContacto(ArrayList<Contacto> contactos) {
-	System.out.println("Introduce posicion del contacto a eliminar: ");
-	int posicion = scan.nextInt();
+public static void eliminarContacto(String nombre) {
+	for (int i = 0; i < contactos.size(); i++) {
+		if (contactos.get(i).getNombre().equalsIgnoreCase(nombre)) {
+			contactos.remove(i);
+			System.out.println("El contacto ha sido eliminado");
+		}
+		
+	}
 	
-	Contacto c = contactos.get(posicion);
-	System.out.println("Se va a eliminar el contacto " + c.toString());
-	contactos.remove(posicion);
+	
+	
 }
 
 }

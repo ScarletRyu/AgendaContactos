@@ -38,5 +38,7 @@ public class Contacto {
         return nombre + ". Telefono = " + telefono;
     }
 	
-	
+	public String toStringTelefono() {
+		return  "--> Telefono = " + telefono;
+	}
 }
