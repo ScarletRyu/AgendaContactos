@@ -33,11 +33,12 @@ public class Contacto {
 	}
 	
 	
-	//toString
+	//toString para pasar el nombre y el telefono que tenemos definidos en los atributos
 	public String toString() {
         return nombre + ". Telefono = " + telefono;
     }
 	
+	//Volvemos a pasar un to string de telefono solo para poder mostrarlo en el metodo buscarContacto 
 	public String toStringTelefono() {
 		return  "--> Telefono = " + telefono;
 	}

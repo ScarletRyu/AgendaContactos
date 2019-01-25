@@ -77,6 +77,7 @@ public static void nuevoContacto(ArrayList<Contacto> contactos) {
 
 //Continuacion del metodo para crear contactos, no podemos duplicar nombres, aunque tengan distinto teléfono
 public static  boolean contactoExiste (String nombre) {
+	//Crear un boolean para comprobar si el nombre que introducimos esta repetido o no
 	boolean comprobarExistencia = false;
 	for (int i = 0; i< contactos.size(); i++) {
 		if (contactos.get(i).getNombre().equalsIgnoreCase(nombre)) {
@@ -118,6 +119,7 @@ public static void buscarContacto(String nombre) {
 
 /*Metodo para eliminar contactos*/
 public static void eliminarContacto(String nombre) {
+	//Recorremos el ArrayList con un for para buscar dentro de el si esta el nombre que vamos a eliminar
 	for (int i = 0; i < contactos.size(); i++) {
 		if (contactos.get(i).getNombre().equalsIgnoreCase(nombre)) {
 			contactos.remove(i);
